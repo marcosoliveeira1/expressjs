@@ -119,15 +119,15 @@ app.get("/pedido/:id", async (req, res) => {
     }
 
     if(exist){
-        response.data.data.situacao = 10;
-        response.data.data.usuarioEntregador = {
-            email: "joaobcrts@gmail.com",
-            nome: "Joao Cortes ",
-            ddd: "11",
-            telefone: "11984112730",
-            telefoneFormatado: "(1111) 98411-2730",
-        };
-        if(exist.situacao != 30) {
+      response.data.data.usuarioEntregador = {
+        email: "joaobcrts@gmail.com",
+        nome: "Joao Cortes ",
+        ddd: "11",
+        telefone: "11984112730",
+        telefoneFormatado: "(1111) 98411-2730",
+      };
+      response.data.data.situacao = exist.situacao;
+      if(exist.situacao != 30) {
           setTimeout(() => {
             exist.situacao = exist.situacao + 10;
             console.log("updating status:"+req.params.id, exist);
