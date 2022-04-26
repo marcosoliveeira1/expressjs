@@ -118,18 +118,13 @@ app.get("/pedido/:id", async (req, res) => {
     }
 
     if(exist){
-        response.data.situacao = 10;
+        response.data.data.situacao = 10;
         response.data.data.usuarioEntregador = {
-            id: 196392,
-            perfilId: 1,
             email: "joaobcrts@gmail.com",
-            nome: "Joao Bicudo Cortes ",
-            cpf: "40685597830",
+            nome: "Joao Cortes ",
             ddd: "11",
             telefone: "11984112730",
             telefoneFormatado: "(1111) 98411-2730",
-            latitude: -23.550373,
-            longitude: -46.696232,
           };
     }
 
