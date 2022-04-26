@@ -118,6 +118,7 @@ app.get("/pedido/:id", async (req, res) => {
     }
 
     if(exist){
+        response.data.situacao = 10;
         response.data.data.usuarioEntregador = {
             id: 196392,
             perfilId: 1,
