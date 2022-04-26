@@ -96,6 +96,7 @@ app.post("/pedido", async (req, res) => {
 });
 
 app.get("/pedido/:id", async (req, res) => {
+  console.log("getting order" + req.params.id);
   try {
     const response = await axios.get(
       `https://hm-backendentregas.mottu.dev/api/pedido/${req.params.id}`,
@@ -108,11 +109,11 @@ app.get("/pedido/:id", async (req, res) => {
     );
     
 
-    const exist = orders.find(order => order == req.params.id);
+    const exist = orders.find(order => order.id == req.params.id);
 
     if(!exist) {
         setTimeout(() => {
-            orders.push(req.params.id);
+            orders.push({id: req.params.id, status: 10});
             console.log("added:"+req.params.id, orders);
         }, 30000);
     }
@@ -125,8 +126,13 @@ app.get("/pedido/:id", async (req, res) => {
             ddd: "11",
             telefone: "11984112730",
             telefoneFormatado: "(1111) 98411-2730",
-          };
-    }
+        };
+        if(exist.status != 30) {
+          setTimeout(() => {
+            exist.status = exist.status + 10;
+          }, 30000);
+        }
+      }
 
     response.data.teste = "teste";
     res.json(response.data);
