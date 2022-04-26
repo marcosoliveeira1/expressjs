@@ -110,7 +110,7 @@ app.get("/pedido/:id", async (req, res) => {
     
 
     const exist = orders.find(order => order.id == req.params.id);
-
+    console.log({ exist });
     if(!exist) {
         setTimeout(() => {
             orders.push({id: req.params.id, status: 10});
@@ -130,6 +130,7 @@ app.get("/pedido/:id", async (req, res) => {
         if(exist.status != 30) {
           setTimeout(() => {
             exist.status = exist.status + 10;
+            console.log("updating status:"+req.params.id, exist);
           }, 30000);
         }
       }
