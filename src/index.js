@@ -129,7 +129,8 @@ app.get("/pedido/:id", async (req, res) => {
       response.data.data.situacao = exist.situacao;
       if(exist.situacao != 30) {
           setTimeout(() => {
-            exist.situacao = exist.situacao + 10;
+            // cast exist.situacao to int and add 10
+            exist.situacao = parseInt(exist.situacao) + 10;
             console.log("updating status:"+req.params.id, exist);
           }, 30000);
         }
