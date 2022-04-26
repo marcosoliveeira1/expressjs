@@ -127,9 +127,9 @@ app.get("/pedido/:id", async (req, res) => {
             telefone: "11984112730",
             telefoneFormatado: "(1111) 98411-2730",
         };
-        if(exist.status != 30) {
+        if(exist.situacao != 30) {
           setTimeout(() => {
-            exist.status = exist.status + 10;
+            exist.situacao = exist.situacao + 10;
             console.log("updating status:"+req.params.id, exist);
           }, 30000);
         }
