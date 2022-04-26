@@ -113,7 +113,7 @@ app.get("/pedido/:id", async (req, res) => {
     console.log({ exist });
     if(!exist) {
         setTimeout(() => {
-            orders.push({id: req.params.id, status: 10});
+            orders.push({id: req.params.id, situacao: 10});
             console.log("added:"+req.params.id, orders);
         }, 30000);
     }
