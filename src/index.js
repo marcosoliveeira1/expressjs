@@ -1,98 +1,26 @@
 const express = require("express");
 const axios = require("axios");
 const app = express();
-const cors = require('cors');
+const cors = require("cors");
 const port = process.env.PORT || 3333;
-
 
 app.use(express.json());
 
-app.use(cors({
-    origin: '*'
-}));
-app.get("/", (req, res) => {
-  res.json({
-    message: "Hello World!",
-  });
-});
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 const orders = [];
+orders.push({
+  id: 979197,
+  situacao: 30,
+});
 
 const instance = axios.create({
   baseURL: "https://hm-backendentregas.mottu.dev/api/",
   timeout: 1000,
-});
-
-app.post("//Integracoes/login", async (req, res) => {
-  try {
-    const response = await axios.post(
-      "https://hm-backendentregas.mottu.dev/api/Integracoes/login",
-      {
-        ...req.body,
-      }
-    );
-    response.data.teste = "teste";
-    res.json(response.data);
-  } catch (error) {
-      console.log(error);
-      res.json(error);
-  }
-});
-app.post("/Integracoes/login", async (req, res) => {
-  try {
-    const response = await axios.post(
-      "https://hm-backendentregas.mottu.dev/api/Integracoes/login",
-      {
-        ...req.body,
-      }
-    );
-    response.data.teste = "teste";
-    res.json(response.data);
-  } catch (error) {
-      console.log(error);
-      res.json(error);
-  }
-});
-
-app.get("/Integracoes/usuario/filial", async (req, res) => {
-  try {
-    const response = await axios.get(
-      "https://hm-backendentregas.mottu.dev/api/Integracoes/usuario/filial",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: req.headers.authorization,
-        },
-      }
-    );
-    response.data.teste = "teste";
-
-    res.json(response.data);
-  } catch (error) {
-    console.log(error);
-    res.json(error);
-  }
-});
-
-app.post("/pedido", async (req, res) => {
-  try {
-    const response = await axios.post(
-      `https://hm-backendentregas.mottu.dev/api/pedido/`,
-      { ...req.body },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: req.headers.authorization,
-        },
-      }
-    );
-
-    response.data.teste = "teste";
-    res.json(response.data);
-  } catch (error) {
-    console.log(error);
-    res.json(error);
-  }
 });
 
 app.get("/pedido/:id", async (req, res) => {
@@ -107,35 +35,64 @@ app.get("/pedido/:id", async (req, res) => {
         },
       }
     );
-    
 
-    const exist = orders.find(order => order.id == req.params.id);
-    console.log({ exist });
-    if(!exist) {
-        setTimeout(() => {
-            orders.push({id: req.params.id, situacao: 10});
-            console.log("added:"+req.params.id, orders);
-        }, 30000);
-    }
-
-    if(exist){
+    const exist = orders.find((order) => order.id == req.params.id);
+    if (exist) {
       response.data.data.usuarioEntregador = {
         email: "joaobcrts@gmail.com",
-        nome: "Joao Cortes ",
+        nome: "João Cortes ",
         ddd: "11",
         telefone: "11984112730",
         telefoneFormatado: "(1111) 98411-2730",
       };
-      response.data.data.situacao = exist.situacao;
-      if(exist.situacao != 30) {
-          setTimeout(() => {
-            // cast exist.situacao to int and add 10
-            exist.situacao = parseInt(exist.situacao) + 10;
-            console.log("updating status:"+req.params.id, exist);
-          }, 30000);
-        }
-      }
+      response.data.data.situacao = exist.situacao ?? 0;
+    }
 
+    response.data.teste = "teste";
+    res.json(response.data);
+  } catch (error) {
+    console.log(error);
+    res.json(error);
+  }
+});
+
+app.get("*", async (req, res) => {
+  try {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const authorization = req.headers.authorization;
+    if (authorization) headers.Authorization = authorization;
+
+    const response = await axios.get(
+      `https://hm-backendentregas.mottu.dev/api/${req.path}`,
+      {headers}
+    );
+    response.data.teste = "teste";
+    res.json(response.data);
+  } catch (error) {
+    console.log(error);
+    res.json(error);
+  }
+});
+
+app.post("*", async (req, res) => {
+  const headers = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const authorization = req.headers.authorization;
+  if (authorization) headers.Authorization = authorization;
+
+  try {
+    const response = await axios.post(
+      `https://hm-backendentregas.mottu.dev/api/${req.path}`,
+      { ...req.body },
+      { headers }
+    );
     response.data.teste = "teste";
     res.json(response.data);
   } catch (error) {
